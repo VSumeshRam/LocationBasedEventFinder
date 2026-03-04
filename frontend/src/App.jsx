@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home.jsx';
 import Login from './Login.jsx';
-import Register from './Register.jsx'; // <--- Real Register Component
-import AdminPanel from './AdminPanel.jsx'; // <--- Real Admin Component
-import PostEvent from './PostEvent.jsx'; // <--- We will create this file next
+import Register from './Register.jsx';
+import AdminPanel from './AdminPanel.jsx';
+import PostEvent from './PostEvent.jsx';
+import Profile from './Profile.jsx'; // <-- Added Profile Import
 
 function App() {
   const userString = localStorage.getItem('user');
@@ -24,17 +25,17 @@ function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <Link to="/" style={{ textDecoration: 'none', color: '#555', fontWeight: 'bold' }}>Live Map</Link>
 
-            {/* 1. ADMIN MODULE: Only Garry sees this */}
-            {user?.email === 'garry@test.com' && (
+            {/* Admin Module */}
+            {user?.role === 'Admin' && (
               <Link to="/admin-panel" style={{ textDecoration: 'none', color: '#dc3545', fontWeight: 'bold' }}>🛡️ Admin Panel</Link>
             )}
 
-            {/* 2. ORGANIZER MODULE: Only visible if Approved by Admin */}
+            {/* Organizer Module */}
             {user?.role === 'Organizer' && user?.isApproved && (
               <Link to="/post-event" style={{ textDecoration: 'none', color: '#28a745', fontWeight: 'bold' }}>➕ Post Event</Link>
             )}
 
-            {/* 3. AUTH BUTTONS */}
+            {/* Authentication & Profile Links */}
             {!user ? (
               <>
                 <Link to="/login" style={{ textDecoration: 'none', color: '#555', fontWeight: 'bold' }}>Login</Link>
@@ -42,7 +43,11 @@ function App() {
               </>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <span style={{ fontSize: '14px', color: '#777' }}>Hi, {user.name} ({user.role})!</span>
+                <span style={{ fontSize: '14px', color: '#777' }}>Hi, {user.name}!</span>
+
+                {/* <-- Added Profile Link Here --> */}
+                <Link to="/profile" style={{ textDecoration: 'none', color: '#007BFF', fontWeight: 'bold' }}>My Account</Link>
+
                 <button onClick={logout} style={{ padding: '8px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Logout</button>
               </div>
             )}
@@ -56,6 +61,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/admin-panel" element={<AdminPanel />} />
             <Route path="/post-event" element={<PostEvent />} />
+            {/* <-- Added Profile Route Here --> */}
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
 
