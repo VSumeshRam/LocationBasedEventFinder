@@ -7,6 +7,7 @@ import PostEvent from './PostEvent.jsx';
 import Profile from './Profile.jsx';
 import InterestedEvents from './InterestedEvents.jsx';
 import Notifications from './Notifications.jsx'; // <-- Added Notifications Import
+import ApprovedOrgs from './ApprovedOrgs.jsx'; // <-- Added ApprovedOrgs Import
 
 function App() {
   const userString = localStorage.getItem('user');
@@ -29,7 +30,10 @@ function App() {
 
             {/* Admin Module */}
             {user?.role === 'Admin' && (
-              <Link to="/admin-panel" style={{ textDecoration: 'none', color: '#dc3545', fontWeight: 'bold' }}>🛡️ Admin Panel</Link>
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <Link to="/admin-panel" style={{ textDecoration: 'none', color: '#dc3545', fontWeight: 'bold' }}>🛡️ Admin Panel</Link>
+                <Link to="/approved-orgs" style={{ textDecoration: 'none', color: '#17a2b8', fontWeight: 'bold' }}>🏢 Approved Orgs</Link>
+              </div>
             )}
 
             {/* Organizer Module */}
@@ -64,6 +68,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/admin-panel" element={<AdminPanel />} />
+            <Route path="/approved-orgs" element={<ApprovedOrgs />} />
             <Route path="/post-event" element={<PostEvent />} />
             {/* <-- Added Profile Route Here --> */}
             <Route path="/profile" element={<Profile />} />

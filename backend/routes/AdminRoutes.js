@@ -48,4 +48,31 @@ router.put('/reject-organizer/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ message: err.message }); }
 });
 
+// GET all approved organizers
+router.get('/approved-organizers', async (req, res) => {
+    try {
+        const approved = await User.find({ role: 'Organizer', isApproved: true });
+        res.json(approved);
+    } catch (err) { res.status(500).json({ message: err.message }); }
+});
+
+// REVOKE an organizer's approval
+router.put('/revoke-organizer/:id', async (req, res) => {
+    try {
+        const { reason } = req.body;
+        const user = await User.findByIdAndUpdate(req.params.id, { isApproved: false, verificationStatus: 'Revoked' }, { new: true });
+        
+        // Notify the Organizer of revocation
+        if (user) {
+            await Notification.create({
+                recipient: user._id,
+                type: 'System',
+                message: `Your organizer approval has been revoked by an Admin.${reason ? ` Reason: ${reason}` : ''}`
+            });
+        }
+
+        res.json({ message: `${user.name}'s approval has been revoked.` });
+    } catch (err) { res.status(500).json({ message: err.message }); }
+});
+
 module.exports = router;
