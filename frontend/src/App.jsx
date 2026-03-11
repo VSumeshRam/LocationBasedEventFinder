@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from './Home.jsx';
+import Home from './home.jsx';
 import Login from './Login.jsx';
 import Register from './Register.jsx';
 import AdminPanel from './AdminPanel.jsx';
 import PostEvent from './PostEvent.jsx';
-import Profile from './Profile.jsx'; // <-- Added Profile Import
+import Profile from './Profile.jsx';
+import InterestedEvents from './InterestedEvents.jsx';
+import Notifications from './Notifications.jsx'; // <-- Added Notifications Import
 
 function App() {
   const userString = localStorage.getItem('user');
@@ -47,6 +49,8 @@ function App() {
 
                 {/* <-- Added Profile Link Here --> */}
                 <Link to="/profile" style={{ textDecoration: 'none', color: '#007BFF', fontWeight: 'bold' }}>My Account</Link>
+                <Link to="/interested-events" style={{ textDecoration: 'none', color: '#28a745', fontWeight: 'bold' }}>⭐ Interested Events</Link>
+                <Link to="/notifications" style={{ textDecoration: 'none', color: '#ff9800', fontWeight: 'bold' }}>🔔 Notifications</Link>
 
                 <button onClick={logout} style={{ padding: '8px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Logout</button>
               </div>
@@ -63,6 +67,8 @@ function App() {
             <Route path="/post-event" element={<PostEvent />} />
             {/* <-- Added Profile Route Here --> */}
             <Route path="/profile" element={<Profile />} />
+            <Route path="/interested-events" element={<InterestedEvents />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Routes>
         </div>
 

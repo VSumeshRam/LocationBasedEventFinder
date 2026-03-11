@@ -23,4 +23,5 @@ app.use('/api/events', eventRoutes);
 app.use('/api/admin', adminRoutes); // <--- THIS IS THE BRIDGE WE ADDED
 
 const PORT = process.env.PORT || 5000;
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

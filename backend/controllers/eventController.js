@@ -1,5 +1,7 @@
 const Event = require('../models/Event');
 const User = require('../models/User');
+const Notification = require('../models/Notification'); // Add this at the top
+
 
 exports.createEvent = async (req, res) => {
     try {
@@ -33,19 +35,22 @@ exports.getEvents = async (req, res) => {
     }
 };
 
+
+
 exports.markInterested = async (req, res) => {
     try {
         const eventId = req.params.id;
         const userId = req.body.userId;
 
         const event = await Event.findById(eventId);
+        const user = await User.findById(userId); // Get user details
+
         if (!event) return res.status(404).json({ message: "Event not found" });
 
         if (!event.interestedUsers.includes(userId)) {
             event.interestedUsers.push(userId);
             await event.save();
         }
-
         res.status(200).json({ message: "Successfully marked as interested!" });
     } catch (error) {
         res.status(500).json({ message: error.message });

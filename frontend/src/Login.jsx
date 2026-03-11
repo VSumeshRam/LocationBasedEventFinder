@@ -9,7 +9,7 @@ export default function Login() {
         e.preventDefault();
         try {
             // 1. Send request to backend
-            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            const response = await axios.post('https://event-sphere-uk4j.onrender.com/api/auth/login', { email, password });
 
             // 2. Save the ENTIRE user object (including role and isApproved) to browser memory
             localStorage.setItem('user', JSON.stringify(response.data));

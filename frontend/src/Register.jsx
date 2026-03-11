@@ -9,7 +9,7 @@ export default function Register() {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/auth/register', formData);
+            await axios.post('https://event-sphere-uk4j.onrender.com/api/auth/register', formData);
             alert(formData.role === 'Organizer'
                 ? "Application sent! Please wait for Admin (Garry) to approve your organization."
                 : "Registration successful! You can now login.");

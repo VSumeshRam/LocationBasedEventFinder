@@ -12,7 +12,7 @@ export default function AdminPanel() {
 
     const fetchPending = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/pending-organizers');
+            const { data } = await axios.get('https://event-sphere-uk4j.onrender.com/api/admin/pending-organizers');
             setPendingOrgs(data);
             setLoading(false);
         } catch (err) {
@@ -24,7 +24,7 @@ export default function AdminPanel() {
     // 2. The Approval Logic
     const handleApprove = async (id) => {
         try {
-            await axios.put(`http://localhost:5000/api/admin/approve-organizer/${id}`);
+            await axios.put(`https://event-sphere-uk4j.onrender.com/api/admin/approve-organizer/${id}`);
             alert("Organization Approved! They can now log in and post events.");
             fetchPending(); // Refresh the list
         } catch (err) {

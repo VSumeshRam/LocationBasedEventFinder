@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Notification = require('../models/Notification'); // <-- Added Notification Import
 
 // GET all pending organizers for Garry's panel
 router.get('/pending-organizers', async (req, res) => {
@@ -13,7 +14,17 @@ router.get('/pending-organizers', async (req, res) => {
 // APPROVE an organizer
 router.put('/approve-organizer/:id', async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true });
+        const user = await User.findByIdAndUpdate(req.params.id, { isApproved: true, verificationStatus: 'Verified' }, { new: true });
+        
+        // NEW: Send approval notification to the Organizer
+        if (user) {
+            await Notification.create({
+                recipient: user._id,
+                type: 'Approval',
+                message: `Congratulations! Your organizer account has been approved. You can now post events.`
+            });
+        }
+
         res.json({ message: `${user.name} is now approved to post events!` });
     } catch (err) { res.status(500).json({ message: err.message }); }
 });

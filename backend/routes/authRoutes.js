@@ -1,13 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const { register, login, updateProfile } = require('../controllers/authController');
 
-// We are importing the exact function names we defined in the controller
-const { register, login } = require('../controllers/authController');
-
-// Route 1: Handle User Registration
 router.post('/register', register);
-
-// Route 2: Handle User Login
 router.post('/login', login);
+router.put('/update', updateProfile); // NEW: Route for saving profile edits
 
 module.exports = router;
