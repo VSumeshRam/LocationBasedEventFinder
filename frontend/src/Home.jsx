@@ -296,14 +296,15 @@ export default function Home() {
                                         >
                                             <div style={{ backgroundColor: '#e7f3ff', color: '#007BFF', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', border: '1px solid #007BFF', cursor: 'help' }}>i</div>
 
-                                            <div className="info-card" style={{ display: 'none', position: 'absolute', top: '-10px', left: '30px', width: '250px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '10px', padding: '15px', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', zIndex: 9999 }}>
+                                            <div className="info-card" style={{ display: 'none', position: 'absolute', top: '-10px', left: '30px', width: '300px', maxHeight: '350px', overflowY: 'auto', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '10px', padding: '15px', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', zIndex: 9999 }}>
                                                 <h4 style={{ margin: '0 0 10px 0', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>Event Overview</h4>
                                                 <div style={{ fontSize: '12px', color: '#444', lineHeight: '1.6' }}>
                                                     <p style={{ margin: '0 0 5px 0' }}><strong>📅 Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
                                                     <p style={{ margin: '0 0 5px 0' }}><strong>🏷️ Category:</strong> {event.eventType}</p>
-                                                    <p style={{ margin: '0 0 10px 0' }}><strong>📝 Desc:</strong> {event.description?.substring(0, 100)}...</p>
+                                                    <p style={{ margin: '0 0 5px 0' }}><strong>📍 Location:</strong> {event.location.address}</p>
+                                                    <p style={{ margin: '0 0 10px 0' }}><strong>📝 Desc:</strong> {event.description}</p>
                                                     {event.regLink && (
-                                                        <a href={event.regLink} target="_blank" rel="noreferrer" style={{ color: '#28a745', fontWeight: 'bold', textDecoration: 'none' }}>Register Now →</a>
+                                                        <a href={event.regLink} target="_blank" rel="noreferrer" style={{ color: '#28a745', fontWeight: 'bold', textDecoration: 'none', display: 'block', marginTop: '10px' }}>Register Now →</a>
                                                     )}
                                                 </div>
                                             </div>
