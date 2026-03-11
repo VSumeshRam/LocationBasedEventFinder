@@ -6,7 +6,7 @@ const Notification = require('../models/Notification'); // <-- Added Notificatio
 // GET all pending organizers for Garry's panel
 router.get('/pending-organizers', async (req, res) => {
     try {
-        const pending = await User.find({ role: 'Organizer', isApproved: false });
+        const pending = await User.find({ role: 'Organizer', verificationStatus: 'Pending' });
         res.json(pending);
     } catch (err) { res.status(500).json({ message: err.message }); }
 });
