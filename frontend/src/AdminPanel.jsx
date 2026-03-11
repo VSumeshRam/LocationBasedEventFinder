@@ -26,17 +26,24 @@ export default function AdminPanel() {
     // 2. The Approval Logic
     const handleApprove = async (id) => {
         try {
+            // Optimistic Update
+            setPendingOrgs(prev => prev.filter(org => org._id !== id));
+
             await axios.put(`https://event-sphere-uk4j.onrender.com/api/admin/approve-organizer/${id}`);
             alert("Organization Approved! They can now log in and post events.");
             fetchPending(); // Refresh the list
         } catch (err) {
             alert("Approval failed.");
+            fetchPending(); // Revert on failure
         }
     };
 
     // 3. The Rejection Logic
     const handleReject = async (id) => {
         try {
+            // Optimistic Update
+            setPendingOrgs(prev => prev.filter(org => org._id !== id));
+
             await axios.put(`https://event-sphere-uk4j.onrender.com/api/admin/reject-organizer/${id}`, {
                 reason: rejectReason
             });
@@ -46,6 +53,7 @@ export default function AdminPanel() {
             fetchPending(); // Refresh the list
         } catch (err) {
             alert("Rejection failed.");
+            fetchPending(); // Revert on failure
         }
     };
 
