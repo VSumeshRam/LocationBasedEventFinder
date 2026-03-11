@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, CircleMarker, LayersControl, LayerGroup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, CircleMarker, LayersControl, LayerGroup, Polyline, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -49,6 +49,8 @@ export default function Home() {
     // --- STATE MANAGEMENT ---
     const [events, setEvents] = useState([]);
     const [userLoc, setUserLoc] = useState(null);
+    const [locSource, setLocSource] = useState(null); // 'GPS' or 'MANUAL'
+    const [isManualPinning, setIsManualPinning] = useState(false);
     const [mapTarget, setMapTarget] = useState(null);
     const [nearbyEvents, setNearbyEvents] = useState([]);
     const [isSearchingGPS, setIsSearchingGPS] = useState(false);
@@ -148,6 +150,7 @@ export default function Home() {
                 navigator.geolocation.clearWatch(watchId);
                 const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
                 setUserLoc(loc);
+                setLocSource('GPS');
                 setMapTarget(loc);
                 setIsSearchingGPS(false);
             },
@@ -158,6 +161,34 @@ export default function Home() {
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
         );
+    };
+
+    const handleManualUnpin = () => {
+        if (locSource === 'MANUAL') {
+            if (window.confirm("Unpin the current location?")) {
+                setUserLoc(null);
+                setLocSource(null);
+                setRouteCoords([]);
+                setRouteDistance(null);
+            }
+        }
+    };
+
+    const ManualPinController = () => {
+        useMapEvents({
+            click(e) {
+                if (isManualPinning) {
+                    if (window.confirm("Are you here?")) {
+                        const loc = { lat: e.latlng.lat, lng: e.latlng.lng };
+                        setUserLoc(loc);
+                        setLocSource('MANUAL');
+                        setMapTarget(loc);
+                        setIsManualPinning(false);
+                    }
+                }
+            }
+        });
+        return null;
     };
 
     // --- RENDER LOGIC ---
@@ -230,6 +261,19 @@ export default function Home() {
                         <option value="Music & Arts">Music & Arts</option>
                         <option value="Sports">Sports</option>
                         <option value="Food & Drink">Food & Drink</option>
+                        <option value="Health & Wellness">Health & Wellness</option>
+                        <option value="Business & Networking">Business & Networking</option>
+                        <option value="Education & Learning">Education & Learning</option>
+                        <option value="Science & Tech">Science & Tech</option>
+                        <option value="Community & Culture">Community & Culture</option>
+                        <option value="Charity & Causes">Charity & Causes</option>
+                        <option value="Gaming & Esports">Gaming & Esports</option>
+                        <option value="Fashion & Beauty">Fashion & Beauty</option>
+                        <option value="Film & Media">Film & Media</option>
+                        <option value="Travel & Outdoors">Travel & Outdoors</option>
+                        <option value="Spirituality & Religion">Spirituality & Religion</option>
+                        <option value="Book Club">Book Club</option>
+                        <option value="Startup Pitch">Startup Pitch</option>
                     </select>
                     <button type="submit" className="search-btn">🔍 Search</button>
                 </form>
@@ -239,8 +283,17 @@ export default function Home() {
                     {isSearchingGPS ? "Locating..." : "📍 Near Me"}
                 </button>
 
+                {/* Drop Pin Button */}
+                <button 
+                    onClick={() => setIsManualPinning(!isManualPinning)} 
+                    className="near-me-btn" 
+                    style={{ right: '140px', backgroundColor: isManualPinning ? '#dc3545' : '#9C27B0' }}
+                >
+                    {isManualPinning ? "❌ Cancel Pin" : "📌 Drop Pin"}
+                </button>
+
                 {/* Leaflet Core Map Component */}
-                <MapContainer center={[10.5, 76.5]} zoom={7} style={{ height: '100%', width: '100%', zIndex: 1 }}>
+                <MapContainer center={[10.5, 76.5]} zoom={7} style={{ height: '100%', width: '100%', zIndex: 1, cursor: isManualPinning ? 'crosshair' : 'grab' }}>
                     <LayersControl position="bottomright">
                         <LayersControl.BaseLayer checked name="Satellite View">
                             <LayerGroup>
@@ -254,6 +307,7 @@ export default function Home() {
                     </LayersControl>
 
                     <MapController targetLoc={mapTarget} />
+                    <ManualPinController />
 
                     {/* User Location Visuals */}
                     {userLoc && (
@@ -261,14 +315,25 @@ export default function Home() {
                             <Circle
                                 center={[userLoc.lat, userLoc.lng]}
                                 radius={radiusKm * 1000}
-                                pathOptions={{ fillColor: '#4285F4', color: '#4285F4', weight: 1.5, fillOpacity: 0.12 }}
+                                pathOptions={{ 
+                                    fillColor: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
+                                    color: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
+                                    weight: 1.5, fillOpacity: 0.12 
+                                }}
                             />
                             <CircleMarker
+                                eventHandlers={{ click: handleManualUnpin }}
                                 center={[userLoc.lat, userLoc.lng]}
-                                radius={8}
-                                pathOptions={{ fillColor: '#4285F4', color: '#ffffff', weight: 2, fillOpacity: 1 }}
+                                radius={locSource === 'MANUAL' ? 10 : 8}
+                                pathOptions={{ 
+                                    fillColor: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
+                                    color: '#ffffff', weight: 2, fillOpacity: 1 
+                                }}
                             >
-                                <Popup><strong>You are here</strong></Popup>
+                                <Popup>
+                                    <strong>{locSource === 'MANUAL' ? '📌 Manually Pinned Location' : '📍 You are here'}</strong>
+                                    {locSource === 'MANUAL' && <p style={{ margin: '5px 0 0 0', fontSize: '12px', color: '#666' }}>Click this circle to unpin.</p>}
+                                </Popup>
                             </CircleMarker>
                         </>
                     )}

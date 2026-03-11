@@ -143,7 +143,19 @@ export default function EditEvent() {
                         <option value="Music & Arts">Music & Arts</option>
                         <option value="Sports">Sports</option>
                         <option value="Food & Drink">Food & Drink</option>
-                        {/* More options could be added similar to PostEvent */}
+                        <option value="Health & Wellness">Health & Wellness</option>
+                        <option value="Business & Networking">Business & Networking</option>
+                        <option value="Education & Learning">Education & Learning</option>
+                        <option value="Science & Tech">Science & Tech</option>
+                        <option value="Community & Culture">Community & Culture</option>
+                        <option value="Charity & Causes">Charity & Causes</option>
+                        <option value="Gaming & Esports">Gaming & Esports</option>
+                        <option value="Fashion & Beauty">Fashion & Beauty</option>
+                        <option value="Film & Media">Film & Media</option>
+                        <option value="Travel & Outdoors">Travel & Outdoors</option>
+                        <option value="Spirituality & Religion">Spirituality & Religion</option>
+                        <option value="Book Club">Book Club</option>
+                        <option value="Startup Pitch">Startup Pitch</option>
                     </select>
                 </div>
 
