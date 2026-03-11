@@ -22,7 +22,7 @@ function App() {
       <div style={{ padding: '20px', fontFamily: 'system-ui, sans-serif', backgroundColor: '#f4f4f9', minHeight: '100vh' }}>
 
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 25px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', marginBottom: '20px' }}>
-          <h1 style={{ margin: 0, fontSize: '24px', color: '#007BFF' }}>🌍 LocalEventFinder</h1>
+          <h1 style={{ margin: 0, fontSize: '24px', color: '#007BFF' }}>🌍 EVENT SPHERE</h1>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <Link to="/" style={{ textDecoration: 'none', color: '#555', fontWeight: 'bold' }}>Live Map</Link>
