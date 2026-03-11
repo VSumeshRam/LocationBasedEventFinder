@@ -4,6 +4,8 @@ import axios from 'axios';
 export default function AdminPanel() {
     const [pendingOrgs, setPendingOrgs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [rejectingOrgId, setRejectingOrgId] = useState(null);
+    const [rejectReason, setRejectReason] = useState("");
 
     // 1. Fetch the list of unapproved organizations
     useEffect(() => {
@@ -29,6 +31,21 @@ export default function AdminPanel() {
             fetchPending(); // Refresh the list
         } catch (err) {
             alert("Approval failed.");
+        }
+    };
+
+    // 3. The Rejection Logic
+    const handleReject = async (id) => {
+        try {
+            await axios.put(`https://event-sphere-uk4j.onrender.com/api/admin/reject-organizer/${id}`, {
+                reason: rejectReason
+            });
+            alert("Organization Rejected.");
+            setRejectingOrgId(null);
+            setRejectReason("");
+            fetchPending(); // Refresh the list
+        } catch (err) {
+            alert("Rejection failed.");
         }
     };
 
@@ -59,19 +76,64 @@ export default function AdminPanel() {
                                 <strong style={{ fontSize: '18px' }}>{org.name}</strong>
                                 <p style={{ margin: '5px 0', color: '#555' }}>{org.email}</p>
                             </div>
-                            <button
-                                onClick={() => handleApprove(org._id)}
-                                style={{
-                                    backgroundColor: '#28a745',
-                                    color: 'white',
-                                    border: 'none',
-                                    padding: '10px 20px',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                    fontWeight: 'bold'
-                                }}>
-                                Approve Organization
-                            </button>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end' }}>
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <button
+                                        onClick={() => handleApprove(org._id)}
+                                        style={{
+                                            backgroundColor: '#28a745',
+                                            color: 'white',
+                                            border: 'none',
+                                            padding: '10px 20px',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        Approve Organization
+                                    </button>
+                                    <button
+                                        onClick={() => setRejectingOrgId(rejectingOrgId === org._id ? null : org._id)}
+                                        style={{
+                                            backgroundColor: '#dc3545',
+                                            color: 'white',
+                                            border: 'none',
+                                            padding: '10px 20px',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold'
+                                        }}>
+                                        Reject
+                                    </button>
+                                </div>
+                                {rejectingOrgId === org._id && (
+                                    <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                                        <input
+                                            type="text"
+                                            placeholder="Reason for rejection (optional)"
+                                            value={rejectReason}
+                                            onChange={(e) => setRejectReason(e.target.value)}
+                                            style={{
+                                                padding: '8px',
+                                                borderRadius: '5px',
+                                                border: '1px solid #ccc',
+                                                width: '250px'
+                                            }}
+                                        />
+                                        <button
+                                            onClick={() => handleReject(org._id)}
+                                            style={{
+                                                backgroundColor: '#343a40',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '8px 15px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer'
+                                            }}>
+                                            Confirm Reject
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>

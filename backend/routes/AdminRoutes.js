@@ -29,4 +29,23 @@ router.put('/approve-organizer/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ message: err.message }); }
 });
 
+// REJECT an organizer
+router.put('/reject-organizer/:id', async (req, res) => {
+    try {
+        const { reason } = req.body;
+        const user = await User.findByIdAndUpdate(req.params.id, { isApproved: false, verificationStatus: 'Rejected' }, { new: true });
+        
+        // NEW: Send rejection notification to the Organizer
+        if (user) {
+            await Notification.create({
+                recipient: user._id,
+                type: 'System', // Using System type for rejections out of currently styled types.
+                message: `Your organizer account request has been rejected.${reason ? ` Reason: ${reason}` : ''}`
+            });
+        }
+
+        res.json({ message: `${user.name} has been rejected.` });
+    } catch (err) { res.status(500).json({ message: err.message }); }
+});
+
 module.exports = router;
