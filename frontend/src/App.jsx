@@ -4,6 +4,7 @@ import Login from './Login.jsx';
 import Register from './Register.jsx';
 import AdminPanel from './AdminPanel.jsx';
 import PostEvent from './PostEvent.jsx';
+import EditEvent from './EditEvent.jsx'; // <-- Added EditEvent Import
 import Profile from './Profile.jsx';
 import InterestedEvents from './InterestedEvents.jsx';
 import Notifications from './Notifications.jsx'; // <-- Added Notifications Import
@@ -70,6 +71,7 @@ function App() {
             <Route path="/admin-panel" element={<AdminPanel />} />
             <Route path="/approved-orgs" element={<ApprovedOrgs />} />
             <Route path="/post-event" element={<PostEvent />} />
+            <Route path="/edit-event/:id" element={<EditEvent />} /> {/* <-- Added Route */}
             {/* <-- Added Profile Route Here --> */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/interested-events" element={<InterestedEvents />} />

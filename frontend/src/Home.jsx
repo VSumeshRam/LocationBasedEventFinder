@@ -311,7 +311,11 @@ export default function Home() {
                                     </div>
 
                                     <p style={{ fontSize: '13px', margin: '5px 0', color: '#666' }}>📍 {event.location.address}</p>
-                                    <p style={{ fontSize: '13px', margin: '0 0 12px 0', color: '#333', fontWeight: 'bold' }}>⭐ {event.interestedUsers?.length || 0} People Interested</p>
+
+                                    {/* NEW: Conditional Display Logic for Interest Count */}
+                                    {event.showInterestCount !== false && (
+                                        <p style={{ fontSize: '13px', margin: '0 0 12px 0', color: '#333', fontWeight: 'bold' }}>⭐ {event.interestedUsers?.length || 0} People Interested</p>
+                                    )}
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                         {user && (
@@ -381,7 +385,11 @@ export default function Home() {
                                 <span className="category-badge">{event.eventType}</span>
                                 <h4 style={{ margin: '8px 0 5px 0', color: '#007BFF', fontSize: '16px' }}>{event.title}</h4>
                                 <p style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>{event.location.address}</p>
-                                <p style={{ fontSize: '12px', color: '#28a745', fontWeight: 'bold' }}>👥 {event.interestedUsers?.length || 0} Interested</p>
+                                
+                                {/* NEW: Conditional Display on the Sidebar panel too */}
+                                {event.showInterestCount !== false && (
+                                    <p style={{ fontSize: '12px', color: '#28a745', fontWeight: 'bold' }}>👥 {event.interestedUsers?.length || 0} Interested</p>
+                                )}
                             </div>
                         ))
                     )}

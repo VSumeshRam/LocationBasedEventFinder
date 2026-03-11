@@ -15,6 +15,9 @@ const eventSchema = new mongoose.Schema({
     // UPDATED: Registration link is now completely optional
     regLink: { type: String, required: false },
 
+    // NEW: Toggle for whether the interest count shows on the map
+    showInterestCount: { type: Boolean, default: true },
+
     interestedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 

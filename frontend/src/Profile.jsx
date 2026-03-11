@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
+    const navigate = useNavigate();
     const initialUser = JSON.parse(localStorage.getItem('user'));
     const [user, setUser] = useState(initialUser);
     const [myEvents, setMyEvents] = useState([]);
@@ -87,7 +89,10 @@ export default function Profile() {
                                 <p style={{ fontSize: '12px', color: '#555' }}>📍 {event.location?.address}</p>
                                 <p style={{ fontSize: '12px', color: '#28a745' }}>👥 {event.interestedUsers?.length || 0} Interested</p>
                             </div>
-                            <button onClick={() => handleDelete(event._id)} style={styles.deleteBtn}>Delete</button>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <button onClick={() => navigate(`/edit-event/${event._id}`)} style={styles.editEventBtn}>✏️ Edit</button>
+                                <button onClick={() => handleDelete(event._id)} style={styles.deleteBtn}>🗑️ Delete</button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -101,5 +106,6 @@ const styles = {
     badge: { marginLeft: '10px', backgroundColor: '#e7f3ff', color: '#007BFF', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' },
     eventItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', borderBottom: '1px solid #eee' },
     deleteBtn: { backgroundColor: '#ff4d4d', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' },
+    editEventBtn: { backgroundColor: '#f8f9fa', color: '#333', border: '1px solid #ddd', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' },
     editBtn: { backgroundColor: '#f0f0f0', border: '1px solid #ccc', padding: '8px 15px', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }
 };

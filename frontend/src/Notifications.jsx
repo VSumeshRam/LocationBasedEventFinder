@@ -54,6 +54,15 @@ export default function Notifications() {
         } catch (error) { console.error(error); }
     };
 
+    const handleDelete = async (e, id) => {
+        e.stopPropagation(); // Prevent markAsRead trigger
+        if (!window.confirm("Are you sure you want to permanently delete this notification?")) return;
+        try {
+            await axios.delete(`https://event-sphere-uk4j.onrender.com/api/notifications/${id}`);
+            setNotifications(notifications.filter(n => n._id !== id));
+        } catch (error) { console.error(error); }
+    };
+
     if (!user) return <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'system-ui' }}>Please login to view notifications.</div>;
 
     const unreadCount = notifications.filter(n => !n.isRead).length;
@@ -143,6 +152,26 @@ export default function Notifications() {
                                         </span>
                                     </div>
                                 </div>
+
+                                {/* Delete Button */}
+                                <button
+                                    onClick={(e) => handleDelete(e, note._id)}
+                                    title="Delete notification"
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        fontSize: '18px',
+                                        padding: '5px',
+                                        color: '#888',
+                                        transition: 'transform 0.2s',
+                                        marginLeft: '10px'
+                                    }}
+                                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.2)' }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+                                >
+                                    🗑️
+                                </button>
                             </div>
                         );
                     })}

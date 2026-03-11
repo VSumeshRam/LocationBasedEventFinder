@@ -51,7 +51,10 @@ router.put('/reject-organizer/:id', async (req, res) => {
 // GET all approved organizers
 router.get('/approved-organizers', async (req, res) => {
     try {
-        const approved = await User.find({ role: 'Organizer', isApproved: true });
+        const approved = await User.find({
+            role: 'Organizer',
+            $or: [{ isApproved: true }, { verificationStatus: 'Verified' }]
+        });
         res.json(approved);
     } catch (err) { res.status(500).json({ message: err.message }); }
 });
