@@ -420,8 +420,15 @@ export default function Home() {
                                 onChange={e => setRadiusKm(Number(e.target.value))}
                                 style={{ flex: 1, cursor: 'pointer' }}
                             />
-                            <div style={{ background: '#fff', padding: '5px 10px', borderRadius: '5px', border: '1px solid #ccc', fontWeight: 'bold', minWidth: '60px', textAlign: 'center' }}>
-                                {radiusKm} km
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    value={radiusKm}
+                                    onChange={e => setRadiusKm(Number(e.target.value))}
+                                    style={{ width: '60px', padding: '5px', borderRadius: '5px', border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center', fontSize: '14px' }}
+                                />
+                                <span style={{ fontWeight: 'bold', color: '#555' }}>km</span>
                             </div>
                         </div>
                     </div>
