@@ -203,35 +203,42 @@ export default function Home() {
             */}
             <style>{`
                 /* CORE LAYOUT */
-                .home-layout { display: flex; gap: 20px; height: 85vh; width: 100%; box-sizing: border-box; padding: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+                .home-layout { display: flex; gap: 20px; height: calc(100vh - 100px); min-height: 600px; width: 100%; box-sizing: border-box; padding: 15px 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
                 
                 /* DESKTOP MAP BOX */
-                .map-container-box { flex: 3; position: relative; border-radius: 15px; overflow: hidden; border: 1px solid #ddd; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 50vh; }
+                .map-container-box { flex: 3; position: relative; border-radius: 15px; overflow: hidden; border: 1px solid #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
                 
                 /* DESKTOP SEARCH OVERLAY */
-                .search-box { position: absolute; top: 20px; left: 60px; z-index: 1000; display: flex; width: 450px; border-radius: 30px; overflow: hidden; background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #eee; }
+                .search-box { position: absolute; top: 20px; left: 20px; z-index: 1000; display: flex; width: 480px; border-radius: 25px; overflow: hidden; background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #eee; }
                 .search-input { flex: 2; padding: 12px 20px; border: none; outline: none; font-size: 14px; }
-                .category-dropdown { flex: 1; padding: 12px; border: none; border-left: 1px solid #eee; outline: none; background: #f9f9f9; cursor: pointer; color: #555; }
-                .search-btn { padding: 0 20px; background: #007BFF; color: white; border: none; cursor: pointer; font-size: 16px; transition: 0.3s; }
+                .category-dropdown { flex: 1; padding: 12px; border: none; border-left: 1px solid #eee; outline: none; background: #f9f9f9; cursor: pointer; color: #555; font-size: 14px; }
+                .search-btn { padding: 0 20px; background: #007BFF; color: white; border: none; cursor: pointer; font-size: 15px; font-weight: 600; transition: 0.2s; }
                 .search-btn:hover { background: #0056b3; }
 
-                /* FLOATING GPS BUTTON */
-                .near-me-btn { position: absolute; top: 20px; right: 20px; z-index: 1000; padding: 12px 20px; background: #007BFF; color: white; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s; }
-                .near-me-btn:hover { transform: scale(1.05); background: #0056b3; }
+                /* MAP CONTROLS (GPS & PIN) */
+                .map-controls-wrapper { position: absolute; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; }
+                .near-me-btn { padding: 10px 18px; color: white; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s; font-size: 14px; }
+                .near-me-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
 
                 /* DESKTOP SIDEBAR */
-                .sidebar-box { flex: 1; padding: 20px; background: #fff; border-radius: 15px; border: 1px solid #ddd; overflow-y: auto; height: 100%; }
+                .sidebar-box { flex: 1; padding: 25px; background: #fff; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.04); overflow-y: auto; height: 100%; box-sizing: border-box; }
 
                 /* SMARTPHONE RESPONSIVE OVERRIDES */
-                @media (max-width: 768px) {
-                    .home-layout { flex-direction: column; height: auto; overflow-y: visible; padding: 5px; }
-                    .map-container-box { flex: none; height: 55vh; width: 100%; border-radius: 10px; }
-                    .sidebar-box { flex: none; width: 100%; height: auto; margin-top: 10px; padding: 15px; box-sizing: border-box; box-shadow: none; border: 1px solid #eee; }
-                    .search-box { top: 10px; left: 5%; width: 90%; flex-direction: column; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                    .search-input { width: 100%; box-sizing: border-box; border-bottom: 1px solid #eee; padding: 10px; }
-                    .category-dropdown { width: 100%; border-left: none; border-bottom: 1px solid #eee; padding: 10px; }
-                    .search-btn { width: 100%; padding: 12px; border-radius: 0 0 15px 15px; }
-                    .near-me-btn { top: auto; bottom: 20px; right: 10px; font-size: 13px; padding: 8px 15px; opacity: 0.9; }
+                @media (max-width: 900px) {
+                    .home-layout { flex-direction: column; height: auto; min-height: auto; padding: 10px; gap: 10px; }
+                    .map-container-box { flex: none; height: 60vh; width: 100%; border-radius: 12px; }
+                    
+                    /* Compact Mobile Search Box */
+                    .search-box { top: 10px; left: 10px; width: calc(100% - 20px); flex-direction: row; flex-wrap: wrap; border-radius: 12px; }
+                    .search-input { width: 100%; border-bottom: 1px solid #eee; padding: 12px 15px; flex: none; border-radius: 12px 12px 0 0; }
+                    .category-dropdown { width: 60%; border-right: 1px solid #eee; padding: 12px 15px; flex: none; border-radius: 0 0 0 12px; }
+                    .search-btn { width: 40%; padding: 12px; border-radius: 0 0 12px 0; flex: none; }
+                    
+                    /* Mobile Map Controls */
+                    .map-controls-wrapper { top: auto; bottom: 20px; right: 10px; flex-direction: column; align-items: flex-end; }
+                    .near-me-btn { padding: 10px 16px; font-size: 13px; border-radius: 20px; opacity: 0.95; }
+                    
+                    .sidebar-box { flex: none; width: 100%; height: auto; padding: 15px; }
                 }
 
                 /* ANIMATED BLINKING PIN */
@@ -243,7 +250,7 @@ export default function Home() {
                 .blinking-dot { background-color: #ff3333; border-radius: 50%; width: 18px; height: 18px; border: 3px solid white; animation: pulse 1.5s infinite; }
                 
                 /* TAG STYLING */
-                .category-badge { background-color: #e7f3ff; color: #007BFF; padding: 3px 10px; font-size: 11px; border-radius: 12px; font-weight: bold; text-transform: uppercase; }
+                .category-badge { background-color: #e7f3ff; color: #007BFF; padding: 4px 12px; font-size: 11px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
             `}</style>
 
             {/* --- LEFT SECTION: MAP & SEARCH --- */}
@@ -278,19 +285,19 @@ export default function Home() {
                     <button type="submit" className="search-btn">🔍 Search</button>
                 </form>
 
-                {/* GPS Trigger Button */}
-                <button onClick={findNearbyEvents} className="near-me-btn">
-                    {isSearchingGPS ? "Locating..." : "📍 Near Me"}
-                </button>
-
-                {/* Drop Pin Button */}
-                <button 
-                    onClick={() => setIsManualPinning(!isManualPinning)} 
-                    className="near-me-btn" 
-                    style={{ right: '140px', backgroundColor: isManualPinning ? '#dc3545' : '#9C27B0' }}
-                >
-                    {isManualPinning ? "❌ Cancel Pin" : "📌 Drop Pin"}
-                </button>
+                {/* Map Controls */}
+                <div className="map-controls-wrapper">
+                    <button 
+                        onClick={() => setIsManualPinning(!isManualPinning)} 
+                        className="near-me-btn" 
+                        style={{ backgroundColor: isManualPinning ? '#dc3545' : '#9C27B0' }}
+                    >
+                        {isManualPinning ? "❌ Cancel Pin" : "📌 Drop Pin"}
+                    </button>
+                    <button onClick={findNearbyEvents} className="near-me-btn" style={{ backgroundColor: '#007BFF' }}>
+                        {isSearchingGPS ? "Locating..." : "📍 Near Me"}
+                    </button>
+                </div>
 
                 {/* Leaflet Core Map Component */}
                 <MapContainer center={[10.5, 76.5]} zoom={7} style={{ height: '100%', width: '100%', zIndex: 1, cursor: isManualPinning ? 'crosshair' : 'grab' }}>
