@@ -462,6 +462,7 @@ export default function Home() {
                         displayedNearbyEvents.map(event => (
                             <div
                                 key={event._id}
+                                onClick={() => setMapTarget({ lat: event.location.lat, lng: event.location.lng })}
                                 onMouseEnter={() => setHoveredEventId(event._id)}
                                 onMouseLeave={() => setHoveredEventId(null)}
                                 style={{
