@@ -423,17 +423,29 @@ export default function Home() {
                             <input
                                 type="range"
                                 min="1" max="100"
-                                value={radiusKm}
-                                onChange={e => setRadiusKm(Number(e.target.value))}
+                                value={radiusKm === '' ? 1 : radiusKm}
+                                onChange={e => setRadiusKm(e.target.value)}
                                 style={{ flex: 1, cursor: 'pointer' }}
                             />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                                 <input
                                     type="number"
-                                    min="1"
+                                    min="0.1"
+                                    step="0.1"
                                     value={radiusKm}
-                                    onChange={e => setRadiusKm(Number(e.target.value))}
-                                    style={{ width: '60px', padding: '5px', borderRadius: '5px', border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center', fontSize: '14px' }}
+                                    onChange={e => {
+                                        let val = e.target.value;
+                                        if (val === '') {
+                                            setRadiusKm('');
+                                            return;
+                                        }
+                                        if (val.length > 1 && val.startsWith('0') && !val.startsWith('0.')) {
+                                            val = val.replace(/^0+/, '');
+                                            if (val === '') val = '0';
+                                        }
+                                        setRadiusKm(val);
+                                    }}
+                                    style={{ width: '65px', padding: '5px', borderRadius: '5px', border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center', fontSize: '14px' }}
                                 />
                                 <span style={{ fontWeight: 'bold', color: '#555' }}>km</span>
                             </div>
