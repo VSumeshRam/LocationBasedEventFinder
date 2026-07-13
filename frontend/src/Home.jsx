@@ -59,6 +59,31 @@ function MapController({ targetLoc }) {
     return null;
 }
 
+/**
+ * ANIMATED CIRCLE COMPONENT
+ * Hides the SVG circle during zoom animations to prevent Leaflet's massive CSS scaling glitch.
+ */
+function AnimatedCircle({ center, radius, pathOptions }) {
+    const map = useMap();
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+        const onZoomStart = () => setVisible(false);
+        const onZoomEnd = () => setVisible(true);
+
+        map.on('zoomstart', onZoomStart);
+        map.on('zoomend', onZoomEnd);
+
+        return () => {
+            map.off('zoomstart', onZoomStart);
+            map.off('zoomend', onZoomEnd);
+        };
+    }, [map]);
+
+    if (!visible) return null;
+    return <Circle center={center} radius={radius} pathOptions={pathOptions} />;
+}
+
 export default function Home() {
     // --- STATE MANAGEMENT ---
     const [events, setEvents] = useState([]);
@@ -333,7 +358,7 @@ export default function Home() {
                     {/* User Location Visuals */}
                     {userLoc && (
                         <>
-                            <Circle
+                            <AnimatedCircle
                                 center={[userLoc.lat, userLoc.lng]}
                                 radius={radiusKm * 1000}
                                 pathOptions={{ 
