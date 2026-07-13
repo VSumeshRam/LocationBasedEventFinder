@@ -46,42 +46,22 @@ const manualDotIcon = new L.DivIcon({
  * MAP CONTROLLER COMPONENT
  * Handles smooth flying/panning to new coordinates
  */
-function MapController({ targetLoc }) {
+function MapController({ targetLoc, onFlyStart, onFlyEnd }) {
     const map = useMap();
     useEffect(() => {
         if (targetLoc) {
+            onFlyStart && onFlyStart();
             map.flyTo([targetLoc.lat, targetLoc.lng], 14, {
                 duration: 2.5,
                 easeLinearity: 0.25
             });
+            const timer = setTimeout(() => {
+                onFlyEnd && onFlyEnd();
+            }, 2600); // Wait slightly longer than the 2.5s animation
+            return () => clearTimeout(timer);
         }
-    }, [targetLoc, map]);
+    }, [targetLoc, map]); // Removed onFlyStart/onFlyEnd from deps to avoid infinite loops if they aren't memoized
     return null;
-}
-
-/**
- * ANIMATED CIRCLE COMPONENT
- * Hides the SVG circle during zoom animations to prevent Leaflet's massive CSS scaling glitch.
- */
-function AnimatedCircle({ center, radius, pathOptions }) {
-    const map = useMap();
-    const [visible, setVisible] = useState(true);
-
-    useEffect(() => {
-        const onZoomStart = () => setVisible(false);
-        const onZoomEnd = () => setVisible(true);
-
-        map.on('zoomstart', onZoomStart);
-        map.on('zoomend', onZoomEnd);
-
-        return () => {
-            map.off('zoomstart', onZoomStart);
-            map.off('zoomend', onZoomEnd);
-        };
-    }, [map]);
-
-    if (!visible) return null;
-    return <Circle center={center} radius={radius} pathOptions={pathOptions} />;
 }
 
 export default function Home() {
@@ -93,6 +73,9 @@ export default function Home() {
     const [mapTarget, setMapTarget] = useState(null);
     const [nearbyEvents, setNearbyEvents] = useState([]);
     const [isSearchingGPS, setIsSearchingGPS] = useState(false);
+    
+    // Track map flight state to completely hide SVG elements that glitch during flyTo
+    const [isMapFlying, setIsMapFlying] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filterCategory, setFilterCategory] = useState('All');
@@ -352,21 +335,27 @@ export default function Home() {
                         </LayersControl.BaseLayer>
                     </LayersControl>
 
-                    <MapController targetLoc={mapTarget} />
+                    <MapController 
+                        targetLoc={mapTarget} 
+                        onFlyStart={() => setIsMapFlying(true)} 
+                        onFlyEnd={() => setIsMapFlying(false)} 
+                    />
                     <ManualPinController />
 
                     {/* User Location Visuals */}
                     {userLoc && (
                         <>
-                            <AnimatedCircle
-                                center={[userLoc.lat, userLoc.lng]}
-                                radius={radiusKm * 1000}
-                                pathOptions={{ 
-                                    fillColor: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
-                                    color: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
-                                    weight: 1.5, fillOpacity: 0.12 
-                                }}
-                            />
+                            {!isMapFlying && (
+                                <Circle
+                                    center={[userLoc.lat, userLoc.lng]}
+                                    radius={radiusKm * 1000}
+                                    pathOptions={{ 
+                                        fillColor: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
+                                        color: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
+                                        weight: 1.5, fillOpacity: 0.12 
+                                    }}
+                                />
+                            )}
                             <Marker
                                 eventHandlers={{ click: handleManualUnpin }}
                                 position={[userLoc.lat, userLoc.lng]}
