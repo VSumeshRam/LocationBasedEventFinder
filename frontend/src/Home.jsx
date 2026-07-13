@@ -28,6 +28,20 @@ const blinkingIcon = new L.DivIcon({
     iconAnchor: [12, 12]
 });
 
+const userDotIcon = new L.DivIcon({
+    className: 'custom-user-dot',
+    html: '<div style="background-color: #4285F4; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8]
+});
+
+const manualDotIcon = new L.DivIcon({
+    className: 'custom-manual-dot',
+    html: '<div style="background-color: #9C27B0; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10]
+});
+
 /**
  * MAP CONTROLLER COMPONENT
  * Handles smooth flying/panning to new coordinates
@@ -328,20 +342,16 @@ export default function Home() {
                                     weight: 1.5, fillOpacity: 0.12 
                                 }}
                             />
-                            <CircleMarker
+                            <Marker
                                 eventHandlers={{ click: handleManualUnpin }}
-                                center={[userLoc.lat, userLoc.lng]}
-                                radius={locSource === 'MANUAL' ? 10 : 8}
-                                pathOptions={{ 
-                                    fillColor: locSource === 'MANUAL' ? '#9C27B0' : '#4285F4', 
-                                    color: '#ffffff', weight: 2, fillOpacity: 1 
-                                }}
+                                position={[userLoc.lat, userLoc.lng]}
+                                icon={locSource === 'MANUAL' ? manualDotIcon : userDotIcon}
                             >
                                 <Popup>
                                     <strong>{locSource === 'MANUAL' ? '📌 Manually Pinned Location' : '📍 You are here'}</strong>
-                                    {locSource === 'MANUAL' && <p style={{ margin: '5px 0 0 0', fontSize: '12px', color: '#666' }}>Click this circle to unpin.</p>}
+                                    {locSource === 'MANUAL' && <p style={{ margin: '5px 0 0 0', fontSize: '12px', color: '#666' }}>Click this dot to unpin.</p>}
                                 </Popup>
-                            </CircleMarker>
+                            </Marker>
                         </>
                     )}
 
