@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, CircleMarker, LayersControl, LayerGroup, Polyline, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, CircleMarker, LayersControl, LayerGroup, Polyline, useMapEvents, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -322,7 +322,8 @@ export default function Home() {
                 </div>
 
                 {/* Leaflet Core Map Component */}
-                <MapContainer center={[10.5, 76.5]} zoom={7} style={{ height: '100%', width: '100%', zIndex: 1, cursor: isManualPinning ? 'crosshair' : 'grab' }}>
+                <MapContainer center={[10.5, 76.5]} zoom={7} zoomControl={false} style={{ height: '100%', width: '100%', zIndex: 1, cursor: isManualPinning ? 'crosshair' : 'grab' }}>
+                    <ZoomControl position="bottomleft" />
                     <LayersControl position="bottomright">
                         <LayersControl.BaseLayer checked name="Satellite View">
                             <LayerGroup>
