@@ -375,6 +375,8 @@ html, body {
 
 /* Mobile Responsiveness */
 @media (max-width: 900px) {
+  .navbar { flex-direction: column; gap: 16px; padding: 16px; }
+  .nav-links { flex-wrap: wrap; justify-content: center; gap: 12px; }
   .home-layout { flex-direction: column; height: auto; min-height: auto; gap: 16px; }
   .map-container-box { height: 60vh; width: 100%; }
   .search-box { width: 90%; top: 16px; flex-wrap: wrap; border-radius: var(--border-radius-md); }

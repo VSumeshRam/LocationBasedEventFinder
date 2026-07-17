@@ -271,7 +271,7 @@ export default function Home() {
                 {/* Leaflet Core Map Component */}
                 <MapContainer center={[10.5, 76.5]} zoom={7} zoomControl={false} style={{ height: '100%', width: '100%', zIndex: 1, cursor: isManualPinning ? 'crosshair' : 'grab' }}>
                     <ZoomControl position="bottomleft" />
-                    <LayersControl position="bottomright">
+                    <LayersControl position="topright">
                         <LayersControl.BaseLayer checked name="Satellite View">
                             <LayerGroup>
                                 <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
