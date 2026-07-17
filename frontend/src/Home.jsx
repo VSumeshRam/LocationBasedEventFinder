@@ -220,60 +220,7 @@ export default function Home() {
     return (
         <div className="home-layout">
 
-            {/* CSS STYLES BLOCK 
-              This section contains the logic for Desktop vs Mobile viewing 
-            */}
-            <style>{`
-                /* CORE LAYOUT */
-                .home-layout { display: flex; gap: 20px; height: calc(100vh - 100px); min-height: 600px; width: 100%; box-sizing: border-box; padding: 15px 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-                
-                /* DESKTOP MAP BOX */
-                .map-container-box { flex: 3; position: relative; border-radius: 15px; overflow: hidden; border: 1px solid #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-                
-                /* DESKTOP SEARCH OVERLAY */
-                .search-box { position: absolute; top: 20px; left: 20px; z-index: 1000; display: flex; width: 480px; border-radius: 25px; overflow: hidden; background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #eee; }
-                .search-input { flex: 2; padding: 12px 20px; border: none; outline: none; font-size: 14px; }
-                .category-dropdown { flex: 1; padding: 12px; border: none; border-left: 1px solid #eee; outline: none; background: #f9f9f9; cursor: pointer; color: #555; font-size: 14px; }
-                .search-btn { padding: 0 20px; background: #007BFF; color: white; border: none; cursor: pointer; font-size: 15px; font-weight: 600; transition: 0.2s; }
-                .search-btn:hover { background: #0056b3; }
-
-                /* MAP CONTROLS (GPS & PIN) */
-                .map-controls-wrapper { position: absolute; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; }
-                .near-me-btn { padding: 10px 18px; color: white; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s; font-size: 14px; }
-                .near-me-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
-
-                /* DESKTOP SIDEBAR */
-                .sidebar-box { flex: 1; padding: 25px; background: #fff; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.04); overflow-y: auto; height: 100%; box-sizing: border-box; }
-
-                /* SMARTPHONE RESPONSIVE OVERRIDES */
-                @media (max-width: 900px) {
-                    .home-layout { flex-direction: column; height: auto; min-height: auto; padding: 10px; gap: 10px; }
-                    .map-container-box { flex: none; height: 60vh; width: 100%; border-radius: 12px; }
-                    
-                    /* Compact Mobile Search Box */
-                    .search-box { top: 10px; left: 10px; width: calc(100% - 20px); flex-direction: row; flex-wrap: wrap; border-radius: 12px; }
-                    .search-input { width: 100%; border-bottom: 1px solid #eee; padding: 12px 15px; flex: none; border-radius: 12px 12px 0 0; }
-                    .category-dropdown { width: 60%; border-right: 1px solid #eee; padding: 12px 15px; flex: none; border-radius: 0 0 0 12px; }
-                    .search-btn { width: 40%; padding: 12px; border-radius: 0 0 12px 0; flex: none; }
-                    
-                    /* Mobile Map Controls */
-                    .map-controls-wrapper { top: auto; bottom: 20px; right: 10px; flex-direction: column; align-items: flex-end; }
-                    .near-me-btn { padding: 10px 16px; font-size: 13px; border-radius: 20px; opacity: 0.95; }
-                    
-                    .sidebar-box { flex: none; width: 100%; height: auto; padding: 15px; }
-                }
-
-                /* ANIMATED BLINKING PIN */
-                @keyframes pulse {
-                    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.7); }
-                    70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(255, 51, 51, 0); }
-                    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
-                }
-                .blinking-dot { background-color: #ff3333; border-radius: 50%; width: 18px; height: 18px; border: 3px solid white; animation: pulse 1.5s infinite; }
-                
-                /* TAG STYLING */
-                .category-badge { background-color: #e7f3ff; color: #007BFF; padding: 4px 12px; font-size: 11px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-            `}</style>
+            {/* CSS STYLES BLOCK REMOVED - NOW USING index.css DESIGN SYSTEM */}
 
             {/* --- LEFT SECTION: MAP & SEARCH --- */}
             <div className="map-container-box">
@@ -312,11 +259,11 @@ export default function Home() {
                     <button 
                         onClick={() => setIsManualPinning(!isManualPinning)} 
                         className="near-me-btn" 
-                        style={{ backgroundColor: isManualPinning ? '#dc3545' : '#9C27B0' }}
+                        style={{ backgroundColor: isManualPinning ? 'var(--status-danger)' : 'var(--accent-secondary)' }}
                     >
                         {isManualPinning ? "❌ Cancel Pin" : "📌 Drop Pin"}
                     </button>
-                    <button onClick={findNearbyEvents} className="near-me-btn" style={{ backgroundColor: '#007BFF' }}>
+                    <button onClick={findNearbyEvents} className="near-me-btn" style={{ backgroundColor: 'var(--accent-primary)' }}>
                         {isSearchingGPS ? "Locating..." : "📍 Near Me"}
                     </button>
                 </div>
@@ -382,51 +329,52 @@ export default function Home() {
                             zIndexOffset={hoveredEventId === event._id ? 1000 : 0}
                         >
                             <Popup>
-                                <div style={{ minWidth: '230px', padding: '5px' }}>
+                                <div style={{ minWidth: '230px', padding: '10px', backgroundColor: 'var(--bg-base)', borderRadius: '8px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                        <h3 style={{ margin: '0 0 5px 0', color: '#007BFF', fontSize: '18px' }}>{event.title}</h3>
+                                        <h3 style={{ margin: '0 0 8px 0', color: 'var(--accent-primary)', fontSize: '18px', fontWeight: '700' }}>{event.title}</h3>
 
                                         {/* THE DETAILED INFO TOOLTIP LOGIC */}
                                         <div style={{ position: 'relative', display: 'inline-block' }}
                                             onMouseEnter={(e) => { e.currentTarget.querySelector('.info-card').style.display = 'block'; }}
                                             onMouseLeave={(e) => { e.currentTarget.querySelector('.info-card').style.display = 'none'; }}
                                         >
-                                            <div style={{ backgroundColor: '#e7f3ff', color: '#007BFF', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', border: '1px solid #007BFF', cursor: 'help' }}>i</div>
+                                            <div style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', width: '22px', height: '22px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', border: '1px solid var(--accent-primary)', cursor: 'help' }}>i</div>
 
-                                            <div className="info-card" style={{ display: 'none', position: 'absolute', top: '-10px', left: '30px', width: '300px', maxHeight: '350px', overflowY: 'auto', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '10px', padding: '15px', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', zIndex: 9999 }}>
-                                                <h4 style={{ margin: '0 0 10px 0', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>Event Overview</h4>
-                                                <div style={{ fontSize: '12px', color: '#444', lineHeight: '1.6' }}>
-                                                    <p style={{ margin: '0 0 5px 0' }}><strong>📅 Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
-                                                    <p style={{ margin: '0 0 5px 0' }}><strong>🏷️ Category:</strong> {event.eventType}</p>
-                                                    <p style={{ margin: '0 0 5px 0' }}><strong>📍 Location:</strong> {event.location.address}</p>
-                                                    <p style={{ margin: '0 0 10px 0' }}><strong>📝 Desc:</strong> {event.description}</p>
+                                            <div className="info-card glass-panel" style={{ display: 'none', position: 'absolute', top: '-10px', left: '30px', width: '300px', maxHeight: '350px', overflowY: 'auto', borderRadius: '12px', padding: '20px', zIndex: 9999 }}>
+                                                <h4 style={{ margin: '0 0 12px 0', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', color: 'var(--text-primary)' }}>Event Overview</h4>
+                                                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                                                    <p style={{ margin: '0 0 6px 0' }}><strong style={{color: 'var(--text-primary)'}}>📅 Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
+                                                    <p style={{ margin: '0 0 6px 0' }}><strong style={{color: 'var(--text-primary)'}}>🏷️ Category:</strong> <span className="category-badge">{event.eventType}</span></p>
+                                                    <p style={{ margin: '0 0 6px 0' }}><strong style={{color: 'var(--text-primary)'}}>📍 Location:</strong> {event.location.address}</p>
+                                                    <p style={{ margin: '0 0 12px 0' }}><strong style={{color: 'var(--text-primary)'}}>📝 Desc:</strong> {event.description}</p>
                                                     {event.regLink && (
-                                                        <a href={event.regLink} target="_blank" rel="noreferrer" style={{ color: '#28a745', fontWeight: 'bold', textDecoration: 'none', display: 'block', marginTop: '10px' }}>Register Now →</a>
+                                                        <a href={event.regLink} target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'inline-block', marginTop: '10px' }}>Register Now →</a>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <p style={{ fontSize: '13px', margin: '5px 0', color: '#666' }}>📍 {event.location.address}</p>
+                                    <p style={{ fontSize: '13px', margin: '5px 0 12px 0', color: 'var(--text-muted)' }}>📍 {event.location.address}</p>
 
                                     {/* NEW: Conditional Display Logic for Interest Count */}
                                     {event.showInterestCount !== false && (
-                                        <p style={{ fontSize: '13px', margin: '0 0 12px 0', color: '#333', fontWeight: 'bold' }}>⭐ {event.interestedUsers?.length || 0} People Interested</p>
+                                        <p style={{ fontSize: '13px', margin: '0 0 16px 0', color: 'var(--status-warning)', fontWeight: '600' }}>⭐ {event.interestedUsers?.length || 0} People Interested</p>
                                     )}
 
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {user && (
                                             <button
                                                 onClick={() => handleInterest(event._id, event.title)}
-                                                style={{ padding: '8px', background: '#28a745', color: 'white', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}
+                                                className="btn-outline"
+                                                style={{ borderColor: 'var(--status-success)', color: 'var(--status-success)' }}
                                             >
                                                 Mark Interested
                                             </button>
                                         )}
                                         <button
                                             onClick={() => getRoute(event.location.lat, event.location.lng, event._id)}
-                                            style={{ padding: '8px', background: '#17a2b8', color: 'white', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}
+                                            className="btn-primary"
                                         >
                                             🧭 Navigation Route
                                         </button>
@@ -442,17 +390,18 @@ export default function Home() {
             {userLoc && (
                 <div className="sidebar-box">
                     {/* Interactive Radius Slider */}
-                    <div style={{ background: '#f8f9fa', padding: '15px', borderRadius: '12px', border: '1px solid #eee', marginBottom: '20px' }}>
-                        <h4 style={{ margin: '0 0 12px 0', fontSize: '15px' }}>📍 Search Distance</h4>
+                    {/* Interactive Radius Slider */}
+                    <div className="radius-panel">
+                        <h4>📍 Search Distance</h4>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                             <input
                                 type="range"
                                 min="1" max="100"
                                 value={radiusKm === '' ? 1 : radiusKm}
                                 onChange={e => setRadiusKm(e.target.value)}
-                                style={{ flex: 1, cursor: 'pointer' }}
+                                style={{ flex: 1, cursor: 'pointer', accentColor: 'var(--accent-primary)' }}
                             />
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <input
                                     type="number"
                                     min="0.1"
@@ -470,19 +419,19 @@ export default function Home() {
                                         }
                                         setRadiusKm(val);
                                     }}
-                                    style={{ width: '65px', padding: '5px', borderRadius: '5px', border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center', fontSize: '14px' }}
+                                    style={{ width: '65px', padding: '6px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-base)', color: 'var(--text-primary)', fontWeight: '600', textAlign: 'center', fontSize: '14px' }}
                                 />
-                                <span style={{ fontWeight: 'bold', color: '#555' }}>km</span>
+                                <span style={{ fontWeight: '600', color: 'var(--text-secondary)' }}>km</span>
                             </div>
                         </div>
                     </div>
 
-                    <h3 style={{ fontSize: '18px', borderBottom: '2px solid #007BFF', paddingBottom: '8px', marginBottom: '15px' }}>
+                    <h3 style={{ fontSize: '18px', borderBottom: '2px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px', color: 'var(--text-primary)' }}>
                         Nearby Events ({radiusKm}km)
                     </h3>
 
                     {displayedNearbyEvents.length === 0 ? (
-                        <p style={{ color: '#888', textAlign: 'center', marginTop: '30px' }}>No events found. Try increasing the radius.</p>
+                        <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginTop: '30px', fontSize: '14px' }}>No events found. Try increasing the radius.</p>
                     ) : (
                         displayedNearbyEvents.map(event => (
                             <div
@@ -490,23 +439,15 @@ export default function Home() {
                                 onClick={() => setMapTarget({ lat: event.location.lat, lng: event.location.lng })}
                                 onMouseEnter={() => setHoveredEventId(event._id)}
                                 onMouseLeave={() => setHoveredEventId(null)}
-                                style={{
-                                    padding: '15px',
-                                    borderBottom: '1px solid #eee',
-                                    cursor: 'pointer',
-                                    backgroundColor: hoveredEventId === event._id ? '#f0f7ff' : '#fff',
-                                    transition: 'all 0.2s ease',
-                                    borderRadius: '10px',
-                                    marginBottom: '8px'
-                                }}
+                                className={`event-card ${hoveredEventId === event._id ? 'event-card-active' : ''}`}
                             >
                                 <span className="category-badge">{event.eventType}</span>
-                                <h4 style={{ margin: '8px 0 5px 0', color: '#007BFF', fontSize: '16px' }}>{event.title}</h4>
-                                <p style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>{event.location.address}</p>
+                                <h4 className="event-title">{event.title}</h4>
+                                <p className="event-address">{event.location.address}</p>
                                 
                                 {/* NEW: Conditional Display on the Sidebar panel too */}
                                 {event.showInterestCount !== false && (
-                                    <p style={{ fontSize: '12px', color: '#28a745', fontWeight: 'bold' }}>👥 {event.interestedUsers?.length || 0} Interested</p>
+                                    <p className="event-interested">👥 {event.interestedUsers?.length || 0} Interested</p>
                                 )}
                             </div>
                         ))
