@@ -313,6 +313,7 @@ html, body {
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0; /* Prevents cards from squishing in flex container */
 }
 .event-card:hover {
   border-color: var(--accent-primary);
