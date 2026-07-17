@@ -141,7 +141,7 @@ export default function Home() {
                 setMapTarget(loc);
                 setUserLoc(loc);
             } else {
-                alert("Place not found! Try being more specific (e.g. Kidangoor, Kerala).");
+                alert("Place not found! Try being more specific (e.g. Kottayam, Kerala).");
             }
         } catch (err) {
             console.error("Search Error:", err);
@@ -227,7 +227,7 @@ export default function Home() {
 
                 {/* Overlay Search Bar */}
                 <form onSubmit={handleTextSearch} className="search-box">
-                    <input type="text" placeholder="Search area (e.g., Kidangoor)..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
+                    <input type="text" placeholder="Search area (e.g., Kottayam)..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="search-input" />
                     <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="category-dropdown">
                         <option value="All">All Types</option>
                         <option value="Tech Meetup">Tech Meetup</option>
